@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Application & Marque -->
+    <string name="app_name">TALKIE TECH</string>
+    <string name="companion_name">TECH-FIARAM</string>
+    <string name="app_subtitle">Communication radio locale sans Internet</string>
+    <string name="company_name">RFC OFFICE</string>
+
+    <!-- Écran principal -->
+    <string name="label_user">Nom d\'utilisateur</string>
+    <string name="hint_user">ex. TECH-01</string>
+    <string name="label_channel">Canal virtuel</string>
+    <string name="hint_channel">ex. CANAL-01</string>
+    <string name="label_channel_type">Type de canal</string>
+    <string name="channel_public">Canal public</string>
+    <string name="channel_private">Canal privé (protégé)</string>
+
+    <!-- Statuts de connexion -->
+    <string name="status_disconnected">État : Déconnecté</string>
+    <string name="status_disconnected_sub">Connectez tous les téléphones au même réseau Wi-Fi ou point d\'accès mobile.</string>
+    <string name="status_connected">État : Actif sur le réseau local</string>
+    <string name="status_connected_sub">Canal : %1$s • Poste : %2$s</string>
+    <string name="status_transmitting">Émission en cours…</string>
+    <string name="status_receiving">Réception audio de : %1$s</string>
+    <string name="status_channel_busy">Canal occupé : une station émet actuellement</string>
+
+    <!-- Actions & Boutons PTT -->
+    <string name="btn_connect">SE CONNECTER AU WI-FI LOCAL</string>
+    <string name="btn_disconnect">SE DÉCONNECTER</string>
+    <string name="btn_ptt_idle">MAINTENIR POUR PARLER</string>
+    <string name="btn_ptt_talking">ÉMISSION EN COURS • RELÂCHER</string>
+    <string name="btn_ptt_receiving">RÉCEPTION AUDIO EN COURS</string>
+    <string name="btn_ptt_disabled">MODE RÉCEPTEUR SEUL</string>
+    <string name="ptt_hint">Appuyez et maintenez pour émettre, relâchez pour écouter</string>
+    <string name="ptt_locked">ÉMISSION VERROUILLÉE (MAINS LIBRES)</string>
+    <string name="ptt_unlock">APPUYER POUR DÉVERROUILLER</string>
+
+    <!-- Modes de fonctionnement -->
+    <string name="mode_transceiver">ÉMETTEUR + RÉCEPTEUR</string>
+    <string name="mode_transmitter">ÉMETTEUR uniquement</string>
+    <string name="mode_receiver">RÉCEPTEUR uniquement</string>
+
+    <!-- Canaux & Participants -->
+    <string name="dialog_channels_title">Sélection du canal</string>
+    <string name="dialog_participants_title">Postes connectés sur le canal</string>
+    <string name="no_participants_detected">Aucun autre poste détecté pour le moment.</string>
+    <string name="participants_count">%1$d poste(s) actif(s)</string>
+    <string name="create_private_channel">Créer un canal privé</string>
+    <string name="join_private_channel">Rejoindre avec mot de passe</string>
+    <string name="password_label">Mot de passe du canal (4 à 16 caractères)</string>
+    <string name="password_hint">Code secret</string>
+    <string name="channel_created_success">Canal privé configuré avec succès.</string>
+    <string name="invalid_password">Mot de passe requis pour le canal privé.</string>
+
+    <!-- Paramètres & Thèmes -->
+    <string name="dialog_settings_title">Paramètres audio & réseau</string>
+    <string name="setting_volume">Volume de réception</string>
+    <string name="setting_roger_beep">Roger Beep (Signal sonore de fin)</string>
+    <string name="setting_ptt_chirp">Tonalité d\'ouverture micro (Chirp PTT)</string>
+    <string name="setting_hands_free">Activer le verrouillage mains libres</string>
+    <string name="setting_theme">Thème de l\'interface</string>
+    <string name="theme_system">Automatique (Système)</string>
+    <string name="theme_light">Clair</string>
+    <string name="theme_dark">Sombre</string>
+
+    <!-- À propos -->
+    <string name="dialog_about_title">À propos de TALKIE TECH</string>
+    <string name="about_text">TALKIE TECH &amp; TECH-FIARAM\nApplication professionnelle de radiocommunication locale Push-To-Talk (PTT).\n\nConception : RFC OFFICE\nVersion : 2.0.0\nProtocole : TT02 UDP Broadcast 16 kHz PCM Mono\nFonctionne 100%% hors-ligne sans connexion Internet.</string>
+
+    <!-- Permissions & Erreurs -->
+    <string name="permission_mic_rationale">L\'autorisation du microphone est strictement requise pour la transmission vocale du talkie-walkie.</string>
+    <string name="permission_denied">Permission micro refusée. L\'émission est indisponible.</string>
+    <string name="error_network_socket">Erreur de communication socket réseau Wi-Fi local.</string>
+    <string name="notification_channel_name">Service Talkie-Walkie Actif</string>
+    <string name="notification_title">TALKIE TECH en écoute</string>
+    <string name="notification_content">Canal : %1$s • Audio local actif</string>
+</resources>

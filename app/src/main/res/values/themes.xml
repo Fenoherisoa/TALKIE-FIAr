@@ -1,0 +1,18 @@
+<resources>
+    <!-- Light Theme Base -->
+    <style name="Theme.TalkieTech" parent="Theme.Material3.DayNight.NoActionBar">
+        <item name="colorPrimary">@color/teal_primary</item>
+        <item name="colorPrimaryVariant">@color/teal_primary_variant</item>
+        <item name="colorSecondary">@color/teal_accent</item>
+        <item name="android:statusBarColor">@color/light_surface</item>
+        <item name="android:windowLightStatusBar">true</item>
+        <item name="android:navigationBarColor">@color/light_surface</item>
+        <item name="android:windowBackground">@color/light_background</item>
+
+        <!-- Custom semantic attributes -->
+        <item name="colorSurface">@color/light_surface</item>
+        <item name="colorSurfaceVariant">@color/light_surface_variant</item>
+        <item name="colorOnSurface">@color/light_text_primary</item>
+        <item name="colorOnSurfaceVariant">@color/light_text_secondary</item>
+    </style>
+</resources>
