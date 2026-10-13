@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-- Application & Marque -->
-    <string name="app_name">TALKIE TECH</string>
+    <string name="app_name">TALKIE &amp; FIARAM</string>
     <string name="companion_name">TECH-FIARAM</string>
     <string name="app_subtitle">Communication radio locale sans Internet</string>
     <string name="company_name">RFC OFFICE</string>
