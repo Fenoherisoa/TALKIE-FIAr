@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
     <!-- Application et marque -->
     <string name="app_name">TALKIE &amp; FIARAM</string>
     <string name="companion_name">TECH-FIARAM</string>
@@ -7,7 +8,7 @@
     <string name="company_name">RFC OFFICE</string>
 
     <!-- Écran principal -->
-    <string name="label_user">Nom d'utilisateur</string>
+    <string name="label_user">Nom d&apos;utilisateur</string>
     <string name="hint_user">ex. TECH-01</string>
     <string name="label_channel">Canal virtuel</string>
     <string name="hint_channel">ex. CANAL-01</string>
@@ -17,7 +18,7 @@
 
     <!-- Statuts de connexion -->
     <string name="status_disconnected">État : Déconnecté</string>
-    <string name="status_disconnected_sub">Connectez tous les téléphones au même réseau Wi-Fi ou point d'accès mobile.</string>
+    <string name="status_disconnected_sub">Connectez tous les téléphones au même réseau Wi-Fi ou point d&apos;accès mobile.</string>
     <string name="status_connected">État : Actif sur le réseau local</string>
     <string name="status_connected_sub">Canal : %1$s • Poste : %2$s</string>
     <string name="status_transmitting">Émission en cours…</string>
@@ -56,9 +57,9 @@
     <string name="dialog_settings_title">Paramètres audio &amp; réseau</string>
     <string name="setting_volume">Volume de réception</string>
     <string name="setting_roger_beep">Roger Beep (Signal sonore de fin)</string>
-    <string name="setting_ptt_chirp">Tonalité d'ouverture micro (Chirp PTT)</string>
+    <string name="setting_ptt_chirp">Tonalité d&apos;ouverture micro (Chirp PTT)</string>
     <string name="setting_hands_free">Activer le verrouillage mains libres</string>
-    <string name="setting_theme">Thème de l'interface</string>
+    <string name="setting_theme">Thème de l&apos;interface</string>
     <string name="theme_system">Automatique (Système)</string>
     <string name="theme_light">Clair</string>
     <string name="theme_dark">Sombre</string>
@@ -68,10 +69,11 @@
     <string name="about_text">TALKIE TECH &amp; TECH-FIARAM\nApplication professionnelle de radiocommunication locale Push-To-Talk (PTT).\n\nConception : RFC OFFICE\nVersion : 2.0.0\nProtocole : TT02 UDP Broadcast 16 kHz PCM Mono\nFonctionne à 100%% hors-ligne sans connexion Internet.</string>
 
     <!-- Permissions et erreurs -->
-    <string name="permission_mic_rationale">L'autorisation du microphone est strictement requise pour la transmission vocale du talkie-walkie.</string>
-    <string name="permission_denied">Permission micro refusée. L'émission est indisponible.</string>
+    <string name="permission_mic_rationale">L&apos;autorisation du microphone est strictement requise pour la transmission vocale du talkie-walkie.</string>
+    <string name="permission_denied">Permission micro refusée. L&apos;émission est indisponible.</string>
     <string name="error_network_socket">Erreur de communication socket réseau Wi-Fi local.</string>
     <string name="notification_channel_name">Service Talkie-Walkie Actif</string>
     <string name="notification_title">TALKIE TECH en écoute</string>
     <string name="notification_content">Canal : %1$s • Audio local actif</string>
+
 </resources>
