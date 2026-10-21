@@ -172,7 +172,10 @@ class MainActivity : AppCompatActivity() {
 
         networkManager.onError = { msg ->
             runOnUiThread {
-                Toast.makeText(this, msg, Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, msg, Toast.LENGTH_LONG).show()
+                binding.tvStatusTitle.text = "Erreur réseau"
+                binding.tvStatusSubtitle.text = msg
+                binding.viewStatusDot.backgroundTintList = ColorStateList.valueOf(ContextCompat.getColor(this, R.color.status_red))
             }
         }
     }
@@ -182,7 +185,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun startConnection() {
-        if (!hasMicPermission()) {
+        if (!hasMicPermission() && currentMode != TalkieMode.RECEIVER) {
             requestPermissions(arrayOf(Manifest.permission.RECORD_AUDIO), PERMISSION_REQUEST_CODE)
             return
         }
@@ -435,6 +438,9 @@ class MainActivity : AppCompatActivity() {
         val permissions = mutableListOf(Manifest.permission.RECORD_AUDIO)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             permissions.add(Manifest.permission.POST_NOTIFICATIONS)
+            permissions.add(Manifest.permission.NEARBY_WIFI_DEVICES)
+        } else {
+            permissions.add(Manifest.permission.ACCESS_FINE_LOCATION)
         }
         val missing = permissions.filter {
             ContextCompat.checkSelfPermission(this, it) != PackageManager.PERMISSION_GRANTED

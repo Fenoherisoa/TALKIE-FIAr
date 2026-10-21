@@ -30,3 +30,15 @@ export interface PeerDevice {
   mode: TalkieMode;
   isSpeaking: boolean;
 }
+
+export interface ChannelInfo {
+  id: string;
+  name: string;
+}
+
+export const DEFAULT_CHANNELS: ChannelInfo[] = [
+  { id: 'TECH-01', name: 'Canal 01 — Général' },
+  { id: 'TECH-02', name: 'Canal 02 — Urgence / Sécurité' },
+  { id: 'TECH-03', name: 'Canal 03 — Support Technique' },
+  { id: 'TECH-04', name: 'Canal 04 — Logistique / Équipe' },
+];

@@ -1,6 +1,6 @@
 import React from 'react';
 import { User, Hash, Sliders, Power } from 'lucide-react';
-import { TalkieMode } from '../types/talkie';
+import { TalkieMode, DEFAULT_CHANNELS } from '../types/talkie';
 
 interface ConfigCardProps {
   user: string;
@@ -50,11 +50,16 @@ export const ConfigCard: React.FC<ConfigCardProps> = ({
         </div>
       </div>
 
-      {/* Channel Input */}
+      {/* Channel Input & Quick Presets */}
       <div className="relative">
-        <label className="block text-[11px] font-semibold uppercase tracking-wider text-gray-400 mb-1 pl-1">
-          Canal virtuel
-        </label>
+        <div className="flex items-center justify-between mb-1 pl-1 pr-1">
+          <label className="text-[11px] font-semibold uppercase tracking-wider text-gray-400">
+            Canal virtuel
+          </label>
+          <span className="text-[10px] text-gray-400 font-mono">
+            {DEFAULT_CHANNELS.find((c) => c.id === channel)?.name || 'Canal personnalisé'}
+          </span>
+        </div>
         <div className="relative flex items-center">
           <div className="absolute left-3.5 text-gray-400 pointer-events-none">
             <Hash className="w-4 h-4 text-[#00BFA6]" />
@@ -73,6 +78,27 @@ export const ConfigCard: React.FC<ConfigCardProps> = ({
             }`}
           />
         </div>
+
+        {/* Quick channel preset chips */}
+        {!isActive && (
+          <div className="grid grid-cols-4 gap-1.5 mt-2">
+            {DEFAULT_CHANNELS.map((ch) => (
+              <button
+                key={ch.id}
+                type="button"
+                onClick={() => onChangeChannel(ch.id)}
+                className={`py-1 px-1.5 rounded-lg text-[10px] font-mono font-semibold tracking-wider transition-all truncate border ${
+                  channel === ch.id
+                    ? 'bg-[#00BFA6]/20 text-[#00BFA6] border-[#00BFA6]/50 shadow-sm'
+                    : 'bg-[#25313b]/60 text-gray-300 border-white/5 hover:bg-[#25313b] hover:text-white'
+                }`}
+                title={ch.name}
+              >
+                {ch.id}
+              </button>
+            ))}
+          </div>
+        )}
       </div>
 
       {/* Mode Selector */}

@@ -1,5 +1,5 @@
 import React, { useRef, useEffect } from 'react';
-import { Mic, Radio, Volume2 } from 'lucide-react';
+import { Mic, Radio, Volume2, Lock } from 'lucide-react';
 import { TalkieMode } from '../types/talkie';
 
 interface PttButtonProps {
@@ -8,6 +8,8 @@ interface PttButtonProps {
   isTransmitting: boolean;
   isReceiving: boolean;
   audioLevel: number;
+  isPttLocked: boolean;
+  onTogglePttLock: (val: boolean) => void;
   onStartTalk: () => void;
   onEndTalk: () => void;
 }
@@ -18,6 +20,8 @@ export const PttButton: React.FC<PttButtonProps> = ({
   isTransmitting,
   isReceiving,
   audioLevel,
+  isPttLocked,
+  onTogglePttLock,
   onStartTalk,
   onEndTalk,
 }) => {
@@ -25,7 +29,7 @@ export const PttButton: React.FC<PttButtonProps> = ({
   const isEnabled = isActive && !isReceiverOnly && !isReceiving;
   const buttonRef = useRef<HTMLButtonElement>(null);
 
-  // Keyboard shortcut: Spacebar hold to talk
+  // Keyboard shortcut: Spacebar hold or toggle
   useEffect(() => {
     let spacePressed = false;
 
@@ -39,7 +43,15 @@ export const PttButton: React.FC<PttButtonProps> = ({
       if (e.code === 'Space' && !spacePressed && isEnabled) {
         e.preventDefault();
         spacePressed = true;
-        onStartTalk();
+        if (isPttLocked) {
+          if (isTransmitting) {
+            onEndTalk();
+          } else {
+            onStartTalk();
+          }
+        } else {
+          onStartTalk();
+        }
       }
     };
 
@@ -52,7 +64,9 @@ export const PttButton: React.FC<PttButtonProps> = ({
       if (e.code === 'Space' && spacePressed) {
         e.preventDefault();
         spacePressed = false;
-        onEndTalk();
+        if (!isPttLocked && isTransmitting) {
+          onEndTalk();
+        }
       }
     };
 
@@ -63,23 +77,31 @@ export const PttButton: React.FC<PttButtonProps> = ({
       window.removeEventListener('keydown', handleKeyDown);
       window.removeEventListener('keyup', handleKeyUp);
     };
-  }, [isEnabled, onStartTalk, onEndTalk]);
+  }, [isEnabled, isPttLocked, isTransmitting, onStartTalk, onEndTalk]);
 
   // Touch & Pointer events handlers
   const handlePointerDown = (e: React.PointerEvent) => {
     if (!isEnabled) return;
     e.preventDefault();
-    onStartTalk();
+    if (isPttLocked) {
+      if (isTransmitting) {
+        onEndTalk();
+      } else {
+        onStartTalk();
+      }
+    } else {
+      onStartTalk();
+    }
   };
 
   const handlePointerUp = (e: React.PointerEvent) => {
-    if (!isEnabled) return;
+    if (!isEnabled || isPttLocked) return;
     e.preventDefault();
     onEndTalk();
   };
 
   const handlePointerCancel = (e: React.PointerEvent) => {
-    if (!isEnabled) return;
+    if (!isEnabled || isPttLocked) return;
     e.preventDefault();
     onEndTalk();
   };
@@ -145,24 +167,24 @@ export const PttButton: React.FC<PttButtonProps> = ({
                 isTransmitting ? 'text-white' : isEnabled ? 'text-white' : 'text-gray-400'
               }`}>
                 {isTransmitting
-                  ? 'MITENY… AVOTSY MBA HAMPITSO'
+                  ? (isPttLocked ? 'ÉMISSION ACTIVE (VERROUILLÉE)' : 'MITENY… AVOTSY MBA HAMPITSO')
                   : isReceiving
                     ? 'CANAL OCCUPÉ (RÉCEPTION)'
                     : isReceiverOnly
                       ? 'MODE RÉCEPTEUR ACTIF'
-                      : 'MAINTENIR POUR PARLER'}
+                      : (isPttLocked ? 'CLIQUER POUR PARLER (VERROUILLÉ)' : 'MAINTENIR POUR PARLER')}
               </span>
 
               <span className="text-[11px] block text-gray-300 font-mono">
                 {!isActive
                   ? 'Connectez-vous pour parler'
                   : isTransmitting
-                    ? 'Diffusion audio en direct • Micro actif'
+                    ? (isPttLocked ? 'Cliquer ou [Espace] pour couper le micro' : 'Diffusion audio en direct • Micro actif')
                     : isReceiving
                       ? 'Écoute de la transmission en cours'
                       : isReceiverOnly
                         ? 'Émission désactivée dans ce mode'
-                        : '[Espace] ou maintenir avec le doigt/souris'}
+                        : (isPttLocked ? 'Cliquer pour enclencher le micro en continu' : '[Espace] ou maintenir avec le doigt/souris')}
               </span>
             </div>
           </div>
@@ -177,6 +199,20 @@ export const PttButton: React.FC<PttButtonProps> = ({
             </div>
           )}
         </button>
+
+        {/* Hands-free PTT Lock toggle matching original Android cbLockPtt */}
+        <div className="flex items-center justify-center mt-2.5">
+          <label className="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg bg-[#19242d] border border-white/5 hover:border-white/10 text-xs text-gray-300 hover:text-white cursor-pointer transition-all">
+            <input
+              type="checkbox"
+              checked={isPttLocked}
+              onChange={(e) => onTogglePttLock(e.target.checked)}
+              className="w-4 h-4 rounded accent-[#00BFA6] cursor-pointer"
+            />
+            <Lock className={`w-3.5 h-3.5 ${isPttLocked ? 'text-[#00BFA6]' : 'text-gray-400'}`} />
+            <span>Mode émission verrouillée (mains libres)</span>
+          </label>
+        </div>
       </div>
     </div>
   );

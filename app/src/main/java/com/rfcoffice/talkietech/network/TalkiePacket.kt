@@ -43,7 +43,7 @@ data class TalkiePacket(
 
         fun deserialize(bytes: ByteArray, length: Int): TalkiePacket? {
             return try {
-                if (length < 8) return null
+                if (length < 8 || length > bytes.size) return null
                 val bais = ByteArrayInputStream(bytes, 0, length)
                 val dis = DataInputStream(bais)
                 val magicBytes = ByteArray(4)

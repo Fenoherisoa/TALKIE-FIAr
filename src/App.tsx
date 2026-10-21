@@ -11,6 +11,7 @@ import { ActivityLog } from './components/ActivityLog';
 import { PeersList } from './components/PeersList';
 import { SettingsModal } from './components/SettingsModal';
 import { HotspotGuideModal } from './components/HotspotGuideModal';
+import { MicPermissionModal } from './components/MicPermissionModal';
 
 export const App: React.FC = () => {
   // App State
@@ -19,6 +20,7 @@ export const App: React.FC = () => {
   const [channel, setChannel] = useState('TECH-01');
   const [mode, setMode] = useState<TalkieMode>('TRANSCEIVER');
   const [isTransmitting, setIsTransmitting] = useState(false);
+  const [isPttLocked, setIsPttLocked] = useState(false);
   const [receivingFrom, setReceivingFrom] = useState<string | null>(null);
   const [audioLevel, setAudioLevel] = useState(0);
   const [peers, setPeers] = useState<PeerDevice[]>([]);
@@ -34,6 +36,8 @@ export const App: React.FC = () => {
   // Modals
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
   const [isGuideOpen, setIsGuideOpen] = useState(false);
+  const [isMicModalOpen, setIsMicModalOpen] = useState(false);
+  const [micErrorReason, setMicErrorReason] = useState<string>('');
 
   // References for transmission durations
   const transmitStartTimeRef = useRef<number>(0);
@@ -135,18 +139,34 @@ export const App: React.FC = () => {
       setAudioLevel(0);
       setStatusMessage('État : déconnecté');
     } else {
+      // Receiver mode only listens, so microphone access is not required
+      if (mode === 'RECEIVER') {
+        try {
+          await audioEngine.init();
+          setIsActive(true);
+          setStatusMessage('');
+        } catch (err) {
+          console.error('Audio init error:', err);
+          setStatusMessage('Initialisation audio impossible.');
+        }
+        return;
+      }
+
       // Connect: request microphone
       try {
-        const granted = await audioEngine.requestMic();
-        if (!granted) {
-          setStatusMessage('Microphone non autorisé : vérifiez les permissions.');
+        const res = await audioEngine.requestMic();
+        if (!res.granted) {
+          const reason = res.errorReason || 'Microphone non autorisé : vérifiez les permissions.';
+          setMicErrorReason(reason);
+          setIsMicModalOpen(true);
+          setStatusMessage(reason);
           return;
         }
         setIsActive(true);
         setStatusMessage('');
       } catch (err) {
         console.error('Connection error:', err);
-        setStatusMessage('Connexion impossible : vérifiez le réseau local.');
+        setStatusMessage('Connexion impossible : vérifiez les autorisations.');
       }
     }
   };
@@ -157,9 +177,14 @@ export const App: React.FC = () => {
 
     try {
       transmitStartTimeRef.current = Date.now();
+      const started = await audioEngine.startRecording();
+      if (!started) {
+        setIsTransmitting(false);
+        broadcastNetwork.broadcastPresence(false);
+        return;
+      }
       setIsTransmitting(true);
       broadcastNetwork.broadcastPresence(true);
-      await audioEngine.startRecording();
     } catch (err) {
       console.error('Start talk error:', err);
       setIsTransmitting(false);
@@ -311,6 +336,13 @@ export const App: React.FC = () => {
           isTransmitting={isTransmitting}
           isReceiving={!!receivingFrom}
           audioLevel={audioLevel}
+          isPttLocked={isPttLocked}
+          onTogglePttLock={(locked) => {
+            setIsPttLocked(locked);
+            if (!locked && isTransmitting) {
+              handleEndTalk();
+            }
+          }}
           onStartTalk={handleStartTalk}
           onEndTalk={handleEndTalk}
         />
@@ -350,6 +382,24 @@ export const App: React.FC = () => {
       <HotspotGuideModal
         isOpen={isGuideOpen}
         onClose={() => setIsGuideOpen(false)}
+      />
+
+      {/* Mic Permission Guidance Modal */}
+      <MicPermissionModal
+        isOpen={isMicModalOpen}
+        onClose={() => setIsMicModalOpen(false)}
+        errorReason={micErrorReason}
+        onRetry={async () => {
+          setIsMicModalOpen(false);
+          await handleToggleConnect();
+        }}
+        onFallbackBeacon={async () => {
+          setIsMicModalOpen(false);
+          setMode('RECEIVER');
+          await audioEngine.init();
+          setIsActive(true);
+          await handleSimulateTest();
+        }}
       />
     </div>
   );
